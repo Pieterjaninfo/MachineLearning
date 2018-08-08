@@ -1,6 +1,9 @@
 # IO MANAGER - reading in files, putting it into matrices
 import numpy as np
 import csv
+import os
+
+ROOT_DIRECTORY = 'MachineLearning'
 
 
 def load(file_path):
@@ -10,4 +13,6 @@ def load(file_path):
 
 
 def res_path(file_name):
-    return '../../../resources/' + file_name
+    abs_path = os.path.abspath('')
+    index = abs_path.rfind(ROOT_DIRECTORY)
+    return abs_path[0:index + len(ROOT_DIRECTORY)] + '/resources/' + file_name

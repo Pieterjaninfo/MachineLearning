@@ -49,7 +49,7 @@ def normal_equation(X, y):
     return np.linalg.pinv(X.T @ X) @ X.T @ y
 
 
-def determine_alpha(X, theta, y, iters):
+def automatic_linear_regression(X, theta, y, iters=50):
     min_cost = (np.inf, None, None)
     for alpha in ALPHA_VALUES:
         computed_theta, cost_history = compute_grad(X, theta, y, alpha, iters, debug=True)
@@ -57,12 +57,12 @@ def determine_alpha(X, theta, y, iters):
             min_cost = (cost_history[-1], computed_theta, cost_history)
     return min_cost[1:] \
         if abs((min_cost[2][-1] - min_cost[2][-2]) / min_cost[2][-2]) < 1e-4 \
-        else determine_alpha(X, theta, y, iters*2)
+        else automatic_linear_regression(X, theta, y, iters*2)
 
 
 def main(data_file):
     X, theta, y, mu, sigma = prepare_values(data_file)
-    best_theta, cost_history = determine_alpha(X, theta, y, 50)
+    best_theta, cost_history = automatic_linear_regression(X, theta, y)
     print(f'RESULT ==> THETA: {best_theta.tolist()} - COST: {cost_history[-1]}')
     lineplot([i for i in range(len(cost_history))], cost_history)
 
